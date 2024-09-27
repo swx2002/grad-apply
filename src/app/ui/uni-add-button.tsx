@@ -26,7 +26,7 @@ export default function UniAddButton() {
         const selectedUniversityId = e.target.value;
         const selectedUniversity = universities.find(university => university.id === parseInt(selectedUniversityId));
         console.log(selectedUniversity);
-        const res = await fetch('/api/universities/add', {
+        const res = await fetch('${process.env.NEXT_PUBLIC_API_BASE_URL}/api/universities/add', {
             method: 'POST',
             body: JSON.stringify({university_id: selectedUniversityId, user_id: session.data?.user?.id}),
         });

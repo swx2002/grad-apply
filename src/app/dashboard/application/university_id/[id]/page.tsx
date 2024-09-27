@@ -11,12 +11,17 @@ export default async function ApplicationPage({params}: {params: {id: string}}) 
     const universityInfo: UniversityInfo = await getUniversityById(parseInt(id));
     return (
         <div>
+            <div id = "university-info">
             <h1>{universityInfo.university_name}</h1>
             <p>{universityInfo.program_name}</p>
             <p>{universityInfo.program_duration}</p>
             <p>{universityInfo.gre_requirement}</p>
             <p>{universityInfo.university_logo_url}</p>
             <p>{universityInfo.application_deadline}</p>
+            </div>
+            <div id = "recoomendation-info">
+                <h1>Recommendation Letters</h1>
+            </div>
         </div>
     )
 }
