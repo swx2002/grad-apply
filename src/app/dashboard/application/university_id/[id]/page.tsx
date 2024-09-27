@@ -2,7 +2,7 @@ import { UniversityInfo } from "@/app/lib/definitions";
 export default async function ApplicationPage({params}: {params: {id: string}}) {
     const id = params.id;
     async function getUniversityById(id: number) {
-        const res = await fetch(`http://localhost:3000/api/universities/get_by_id?id=${id}`, { cache: 'no-store' });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/universities/get_by_id?id=${id}`, { cache: 'no-store' });
         if (!res.ok) {
             throw new Error('Failed to fetch applications');
         }

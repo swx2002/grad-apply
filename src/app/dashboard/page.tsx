@@ -9,7 +9,7 @@ async function getUniversitiesByUser(): Promise<UniversityInfo[]> {
     if (!session) {
         return [];
     }
-    const res = await fetch(`http://localhost:3000/api/universities/get_by_user?user_id=${session?.user.id}`, { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/universities/get_by_user?user_id=${session?.user.id}`, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('Failed to fetch universities');
     }
