@@ -58,7 +58,7 @@ export default function Sidenav() {
         })}
       </div>
       {/* Show logged user icon */}
-      {session &&(<div className="relative flex flex-row items-center justify-center" ref={logoutRef}>
+      {status === 'authenticated' &&(<div className="relative flex flex-row items-center justify-center" ref={logoutRef}>
         <button
           onClick={() => setShowLogout(!showLogout)}
           className="flex items-center w-full p-3 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
@@ -80,8 +80,8 @@ export default function Sidenav() {
         </div>
         )}
         {/* Show unlogged user panel */}
-        {!session && (<div className='flex flex-row items-center justify-center'>
-            <RegisterForm />
+        {status === 'unauthenticated' && (<div className='flex flex-row items-center justify-center'>
+          <p> No user logged in</p>
         </div>)}
     </div>
   );
