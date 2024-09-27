@@ -1,21 +1,36 @@
-import { signIn } from "@/auth";
-import { AuthError } from "next-auth";
+import { signIn } from "next-auth/react";
+import { z } from "zod";
 
-export async function authenticate(
-    prevState: string | undefined,
-    formData: FormData,
-) {
-    try {
-        await signIn("credentials", formData);
-    } catch (error) {
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case "CredentialsSignin":
-                    return "Invalid credentials";
-                default:
-                    return "Something went wrong";
-            }
+const registerSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z.string().min(6),
+  });
+export async function register(formData: FormData) {
+    const parsedResult = registerSchema.safeParse({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+      });
+    
+      if (!parsedResult.success) {
+        return {error: 'invalid input'}
+      }
+      const {name, email, password} = parsedResult.data;
+      try {
+        const res = await fetch('http://localhost:3000/api/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name,email, password}),
+        });
+        if (res.ok) {
+            return {message: 'User added successfully'}
+        } else {
+            const data = await res.json();
+            return {error: data.error || 'User registration failed'}
         }
-        throw error;
-    }
+      } catch (error) {
+        return {error: 'Something went wrong'}
+      }
 }
+
