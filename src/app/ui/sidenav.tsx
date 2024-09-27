@@ -16,6 +16,7 @@ const links = [
 export default function Sidenav() {
     const [showLogout, setShowLogout] = useState(false);
     const {data: session, status} = useSession();
+    console.log(status);
     const logoutRef = useRef<HTMLDivElement>(null);
     const handleSignOut = async () => {
         await signOut({redirect: false});
