@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/20/solid';
 import { signOut, useSession } from 'next-auth/react';
 import { useEffect, useRef } from 'react';
-import RegisterForm from './register-form';
 const links = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
   { name: 'Application', href: '/dashboard/application', icon: DocumentDuplicateIcon },
