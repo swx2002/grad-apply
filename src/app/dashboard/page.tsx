@@ -1,9 +1,10 @@
 import UniCard from "../ui/uni-card";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../api/auth/[...nextauth]/options";
 import UniAddButton from "../ui/uni-add-button";
 import { UniversityInfo } from "../lib/definitions";
-export async function getUniversitiesByUser(): Promise<UniversityInfo[]> {
+
+async function getUniversitiesByUser(): Promise<UniversityInfo[]> {
     const session = await getServerSession(authOptions);
     if (!session) {
         return [];
