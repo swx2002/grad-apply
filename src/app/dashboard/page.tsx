@@ -19,6 +19,7 @@ async function getUniversitiesByUser(): Promise<UniversityInfo[]> {
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
     const universities = await getUniversitiesByUser();
+    console.log(universities);
     if (!session) {
         return <div>Please login to view your universities</div>;
     }

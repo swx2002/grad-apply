@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const client = await db.connect();
-    const result = await client.sql`SELECT * FROM universities JOIN user_university_selections ON user_university_selections.university_id = universities.id WHERE user_university_selections.user_id = ${user_id}`;
+    const result = await client.sql`SELECT universities.* FROM universities JOIN user_university_selections ON user_university_selections.university_id = universities.id WHERE user_university_selections.user_id = ${user_id}`;
     return NextResponse.json(result.rows);
   } catch (error) {
     console.error('Error fetching universities:', error);
