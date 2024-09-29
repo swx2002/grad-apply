@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@vercel/postgres';
 import { NextRequest } from 'next/server';
+
 export async function GET(request: NextRequest) {
   const user_id = request.nextUrl.searchParams.get('user_id');
   if (!user_id) {
@@ -8,6 +9,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const client = await db.connect();
+    // Type is UniversityInfo
     const result = await client.sql`SELECT universities.* FROM universities JOIN user_university_selections ON user_university_selections.university_id = universities.id WHERE user_university_selections.user_id = ${user_id}`;
     return NextResponse.json(result.rows);
   } catch (error) {

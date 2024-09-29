@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { db } from '@vercel/postgres';
 
-interface addRequest {
+interface addUniversityRequest {
     university_id:number,
     user_id: number
 }
 export async function POST(req: Request) {
     console.log("Request body:");
     // print out request body as json
-    const selectionInfo:addRequest = await req.json();
+    const selectionInfo:addUniversityRequest = await req.json();
     const university_id = selectionInfo.university_id;
     const user_id = selectionInfo.user_id;
 

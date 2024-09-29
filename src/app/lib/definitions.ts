@@ -13,3 +13,12 @@ export type UniversityInfo = {
     university_logo_url: string;
     application_deadline: string;
 }
+export type RefereeInfo = {
+  id: number;
+  name: string;
+  position: string;
+  avatar_url: string;
+  institution: string;
+  recommendation_status: string;
+  email: string;
+}
