@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { getSession } from "next-auth/react"
+import { dmSans } from "./ui/font";
 import Providers from "./providers"
 
 import "./globals.css";
@@ -26,10 +26,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${dmSans.className}`}>
+      <body className={`bg-indigo-50 ${dmSans.className}`}>
         <Providers>
           {children}
         </Providers>

@@ -1,13 +1,5 @@
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { handleLogout } from '../services/auth-service';
 
 export const LogoutButton = () => {
-  const router = useRouter();
-  const handleLogout = async () => {
-    await signOut({redirect: false});
-    sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('userName');
-    window.location.reload();
-  }
-  return <button onClick={handleLogout}>Logout</button>;
+  return <button onClick={handleLogout} className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100">Logout</button>;
 }

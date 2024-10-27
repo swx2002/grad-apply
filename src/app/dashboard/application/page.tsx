@@ -1,4 +1,3 @@
-import { UniversityInfo } from "@/app/lib/definitions";
 export default async function ApplicationPage() {
     return (
         <div>

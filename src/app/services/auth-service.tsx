@@ -1,4 +1,5 @@
-import { signIn } from "next-auth/react";
+'use client'
+import { signIn, signOut } from 'next-auth/react';
 import { z } from "zod";
 
 const registerSchema = z.object({
@@ -6,7 +7,8 @@ const registerSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
   });
-export async function register(formData: FormData) {
+
+async function register(formData: FormData) {
     const parsedResult = registerSchema.safeParse({
         name: formData.get('name'),
         email: formData.get('email'),
@@ -34,3 +36,36 @@ export async function register(formData: FormData) {
       }
 }
 
+export async function handleLogin(formData: FormData) {
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const result = await signIn('credentials', {
+      redirect: false,
+      name,
+      email,
+      password,
+    });
+    if (result?.error) {
+      sessionStorage.setItem('isLoggedIn', 'false');
+    } else {
+      window.location.href = '/dashboard';
+    }
+  }
+
+export async function handleLogout() {
+    await signOut({redirect: false});
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userName');
+    window.location.href = '/';
+  }
+
+export async function handleRegister(formData: FormData) {
+  const res = await register(formData);
+  if (res.error) {
+      alert(res.error);
+  } else {
+      alert(res.message);
+      window.location.href = '/';
+  }
+}

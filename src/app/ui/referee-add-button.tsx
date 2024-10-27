@@ -5,7 +5,6 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
-import { RefereeInfo } from '../lib/definitions';
 
 export default function RefereeAddButton() {
     

@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "text-color": "#2B3674",
+        "progress-bar-color": "#4318FF",
+        "theme-color": "#5355AF",
       },
     },
   },

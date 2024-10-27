@@ -1,5 +1,5 @@
 import LoginButton from "./ui/login-button";
-import RegisterForm from "./ui/register-form";
+import RegisterForm from "./ui/signup-button";
 
 export default function Home() {
   return (
