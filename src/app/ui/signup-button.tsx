@@ -14,8 +14,8 @@ export default function RegisterForm() {
 
     return (
         <div>
-           <button onClick={openModal} className="w-full px-4 py-2 text-center text-sm text-white bg-blue-500 hover:bg-blue-700">
-             Register
+           <button onClick={openModal} className="w-full px-4 py-2 text-center rounded-md text-sm text-white bg-black hover:bg-white hover:text-black hover:border-black hover:border">
+             Sign up
            </button>
            <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Login Form" style={{
             content: {
