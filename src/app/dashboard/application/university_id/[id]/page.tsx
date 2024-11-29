@@ -3,10 +3,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import RefereeAddButton from "@/app/ui/referee-add-button";
 
-interface PageProps {
-    params: { id: string };
-}
-export default async function UniversityApplicationPage({ params }: PageProps) {
+export default async function UniversityApplicationPage({ params }: {
+    params: { id: string }
+}) {
     const university_id = parseInt(params.id);
 
     const user_id = (await getServerSession(authOptions))?.user.id;
