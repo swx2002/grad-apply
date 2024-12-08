@@ -1,5 +1,5 @@
 'use client'
-import { Editor } from './Editor'
+import TiptapEditor from '../../ui/text-editor/Editor'
 import { Room } from './Room'
 import { Suspense } from 'react'
 export default function EssaysPage() {
@@ -7,7 +7,7 @@ export default function EssaysPage() {
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Room>
-          <Editor />
+          <TiptapEditor />
         </Room>
         </Suspense>
     </div>
