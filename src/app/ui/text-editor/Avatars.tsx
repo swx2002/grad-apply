@@ -2,7 +2,6 @@ import { useOthers, useSelf } from "@liveblocks/react/suspense";
 
 export function Avatars() {
   const users = useOthers();
-  console.log(users);
   const currentUser = useSelf();
 
   return (
