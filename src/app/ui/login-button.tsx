@@ -34,7 +34,7 @@ export default function LoginForm() {
 
     return (
       <div>
-        <button onClick={openModal} className="w-full px-4 py-2 text-center text-sm text-white bg-blue-500 hover:bg-blue-700">
+        <button onClick={openModal} className="w-full py-3 bg-gray-300 text-white rounded-full hover:bg-gray-400 transition-colors">
           Log in
         </button>
         <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Login Form" style={{
@@ -73,7 +73,7 @@ export default function LoginForm() {
 
 export function LoginButton({isLoading}: {isLoading: boolean}) {
   return (
-      <button disabled = {isLoading} className="mt-4 w-full border bg-blue-500 border-gray-300 text-white flex items-center justify-center rounded-md py-2 disabled:bg-gray-400 disabled:cursor-not-allowed">
+      <button disabled = {isLoading} className="mt-4 w-full border bg-white-500 border-black text-black flex items-center justify-center rounded-md py-2 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
       </button>
   )
