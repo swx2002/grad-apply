@@ -40,7 +40,10 @@ export async function POST(request: NextRequest) {
   const session = liveblocks.prepareSession(user.id, {
     userInfo: user.info,
   });
-
+  // checkif respone is valid json
+  if (!session) {
+    return new Response("Invalid session", { status: 400 });
+  }
   // Give the user access to the room
   const { room } = await request.json();
   session.allow(room, session.FULL_ACCESS);
