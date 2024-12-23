@@ -3,14 +3,15 @@ import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 
-const API_KEY = process.env.LIVEBLOCKS_SECRET;
-
-const liveblocks = new Liveblocks({
-  secret: API_KEY!,
-});
-
 export async function POST(request: NextRequest) {
+  if (!process.env.LIVEBLOCKS_SECRET) {
+    return new Response("LIVEBLOCKS_SECRET is not set", { status: 500 });
+  }
+  const API_KEY = process.env.LIVEBLOCKS_SECRET;
   // Get the current user's info from your database
+  const liveblocks = new Liveblocks({
+    secret: API_KEY!,
+  });
   const userSession = await getServerSession(authOptions);
   if (!userSession) {
     return new Response("Unauthorized", { status: 401 });
@@ -34,13 +35,12 @@ export async function POST(request: NextRequest) {
       picture: "https://liveblocks.io/avatars/avatar-1.png",
     },
   };
-  console.log(user);
   // Create a session for the current user
   // userInfo is made available in Liveblocks presence hooks, e.g. useOthers
   const session = liveblocks.prepareSession(user.id, {
     userInfo: user.info,
   });
-  // checkif respone is valid json
+  // checkif respone is a valid json
   if (!session) {
     return new Response("Invalid session", { status: 400 });
   }
