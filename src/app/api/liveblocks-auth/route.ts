@@ -20,6 +20,8 @@ export async function POST(request: NextRequest) {
   if (!email) {
     return new Response("Email is required", { status: 400 });
   }
+  //print where the request is sending
+  console.log(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/get_user_info_by_email?email=${email}`);
   // get user info from database by sending GET request to /api/users/get_user_info_by_email, add email to end of url
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/get_user_info_by_email?email=${email}`, { cache: 'no-store' });
   if (!response.ok) {
