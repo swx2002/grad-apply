@@ -2,7 +2,8 @@ import { Liveblocks } from "@liveblocks/node";
 import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
-const API_KEY = "sk_prod_BdCnwIKNKaUdQxiu_4-VZ8rH8_cdX-KB0Zk9d23QTqixEbamIVucIWu7xOKAyx6M";
+
+const API_KEY = process.env.LIVEBLOCKS_SECRET;
 
 const liveblocks = new Liveblocks({
   secret: API_KEY!,
@@ -20,8 +21,11 @@ export async function POST(request: NextRequest) {
   }
   // get user info from database by sending GET request to /api/users/get_user_info_by_email, add email to end of url
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/get_user_info_by_email?email=${email}`, { cache: 'no-store' }).then(res => res.json());
-// response is like {"id":3,"username":"zzz","email":"12345678@gmail.com"}, fit it into a user object
-  console.log(response);
+  // checkif respone is valid json
+  if (!response || typeof response !== 'object') {
+    return new Response("Invalid response", { status: 400 });
+  }
+  // response is like {"id":3,"username":"zzz","email":"12345678@gmail.com"}, fit it into a user object
   const user = {
     id: String(response.id),
     info: {
