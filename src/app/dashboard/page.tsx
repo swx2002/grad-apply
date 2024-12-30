@@ -7,6 +7,7 @@ import { BellIcon } from "@heroicons/react/20/solid";
 import { MoonIcon } from "@heroicons/react/20/solid";
 import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import UserPanel from "../ui/user-panel";
+
 async function getUniversitiesByUser(): Promise<UniversityInfo[]> {
     const session = await getServerSession(authOptions);
     if (!session) {
