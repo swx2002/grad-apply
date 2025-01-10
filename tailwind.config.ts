@@ -15,6 +15,16 @@ const config: Config = {
         "progress-bar-color": "#4318FF",
         "theme-color": "#5355AF",
       },
+      keyframes: {
+        shimmer: {
+          '0%': {
+            backgroundPosition: '200% 0'
+          },
+          '100%': {
+            backgroundPosition: '-200% 0'
+          }
+        }
+      },
     },
   },
   plugins: [],
