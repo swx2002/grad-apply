@@ -14,9 +14,7 @@ export default function LoginPage() {
         
         <form className = "space-y-6" action={async (formData: FormData) => {
                 setIsLoading(true);
-                console.log(isLoading);
                 await handleLogin(formData);
-                console.log(isLoading);
               }}>
         {/* Name Input
         <div>

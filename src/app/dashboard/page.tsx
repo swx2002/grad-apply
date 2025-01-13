@@ -23,7 +23,6 @@ async function getUniversitiesByUser(): Promise<UniversityInfo[]> {
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
     const universities = await getUniversitiesByUser();
-    console.log(universities);
     if (!session) {
         return <div>Please login to view your universities</div>;
     }
@@ -47,7 +46,7 @@ export default async function Dashboard() {
             </header>
             <div id = "universities-container" className="grid grid-cols-2 grid-rows-3 gap-5 content-start justify-items-start h-screen overflow-y-auto">
                 {universities.map((university) => (
-                    <UniCard key={university.id} {...university} />
+                    <UniCard key={university.id} university={university} />
                 ))}
                 <UniAddButton />
             </div>

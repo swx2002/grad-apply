@@ -1,16 +1,16 @@
 'use client';
 
 import { PlusIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { UniversityInfo } from '../lib/definitions';
+import { UniversityInfo, DegreeInfo } from '../lib/definitions';
 import {
   fetchAllUniversities,
-  selectAndAddUniversity
+  selectAndAddUniversity,
+  getDegreesByUniMajor
 } from '../services/university-management-service';
 
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -24,11 +24,44 @@ export default function UniAddButton() {
   // Dropdown data
   const [universities, setUniversities] = useState<UniversityInfo[]>([]);
   const [selectedUniversityId, setSelectedUniversityId] = useState('');
-
+  const [selectedMajor, setSelectedMajor] = useState('');
+  const [availableDegrees, setAvailableDegrees] = useState<DegreeInfo[]>([]);
   // Additional fields
   const [area, setArea] = useState('');
   const [program, setProgram] = useState('');
-  const [deadline, setDeadline] = useState<Date | null>(null);
+
+  // 从 universities 中提取不重复的 majors
+  const distinctMajors = useMemo(() => {
+    // 使用 Map 来存储唯一的 major，使用 major.id 作为键
+    const majorsMap = new Map();
+    
+    universities.forEach(uni => {
+      const { major } = uni;
+      if (!majorsMap.has(major.id)) {
+        majorsMap.set(major.id, {
+          id: major.id,
+          major_name: major.name
+        });
+      }
+    });
+
+    // 转换 Map 为数组
+    return Array.from(majorsMap.values());
+  }, [universities]);
+
+  // 添加 useMemo hook 来获取不重复的大学
+  const distinctUniversities = useMemo(() => {
+    const uniqueUnis = new Map();
+    universities.forEach(uni => {
+      if (!uniqueUnis.has(uni.university_name)) {
+        uniqueUnis.set(uni.university_name, {
+          id: uni.id,
+          university_name: uni.university_name
+        });
+      }
+    });
+    return Array.from(uniqueUnis.values());
+  }, [universities]);
 
   // Open/close form & load universities if opening
   const toggleForm = async () => {
@@ -48,6 +81,23 @@ export default function UniAddButton() {
     setSelectedUniversityId(e.target.value);
   }
 
+  async function handleSelectMajor(e: React.ChangeEvent<HTMLSelectElement>) {
+    const majorId = e.target.value;
+    setSelectedMajor(majorId);
+    setArea(majorId); // 确保 area 也被更新
+
+    try {
+      const degrees = await getDegreesByUniMajor(
+        selectedUniversityId,
+        majorId
+      );
+      setAvailableDegrees(degrees || []);
+    } catch (error) {
+      console.error('Error fetching degrees:', error);
+      setAvailableDegrees([]);
+    }
+  }
+
   // Helper: check if a field is filled
   const isFilled = (value: string | Date | null) => {
     if (typeof value === 'string') {
@@ -60,8 +110,7 @@ export default function UniAddButton() {
   const canSave =
     isFilled(selectedUniversityId) &&
     isFilled(area) &&
-    isFilled(program) &&
-    isFilled(deadline);
+    isFilled(program)
 
   // Handle final submission
   const handleAddProgram = () => {
@@ -87,7 +136,6 @@ export default function UniAddButton() {
     setSelectedUniversityId('');
     setArea('');
     setProgram('');
-    setDeadline(null);
     setShowForm(false);
   };
 
@@ -119,7 +167,7 @@ export default function UniAddButton() {
         >
           {/* Header */}
           <div className="flex justify-between items-center mb-10">
-            <h2 className="text-4xl font-bold">Program</h2>
+            <h2 className="text-4xl font-bold">Selecting a Program...</h2>
             <button
               onClick={() => setShowForm(false)}
               className="text-gray-500 hover:text-gray-700 text-3xl"
@@ -143,7 +191,7 @@ export default function UniAddButton() {
                   onChange={handleSelectUniversity}
                 >
                   <option value="">-- Select a School --</option>
-                  {universities.map((uni) => (
+                  {distinctUniversities.map((uni) => (
                     <option key={uni.id} value={uni.id}>
                       {uni.university_name}
                     </option>
@@ -162,13 +210,18 @@ export default function UniAddButton() {
                 <span className="absolute -top-3 left-3 bg-white text-sm font-semibold text-[#65558f] px-1">
                   Area
                 </span>
-                <input
-                  type="text"
+                <select
                   className="bg-transparent w-full text-lg focus:outline-none"
-                  placeholder="e.g. Computer Science"
                   value={area}
-                  onChange={(e) => setArea(e.target.value)}
-                />
+                  onChange={handleSelectMajor}
+                >
+                  <option value="">-- Select an Area --</option>
+                  {distinctMajors.map((major) => (
+                    <option key={major.id} value={major.id}>
+                      {major.major_name}
+                    </option>
+                  ))}
+                </select>
               </div>
               {isFilled(area) && (
                 <CheckCircleIcon className="w-7 h-7 text-green-500" />
@@ -181,34 +234,20 @@ export default function UniAddButton() {
                 <span className="absolute -top-3 left-3 bg-white text-sm font-semibold text-[#65558f] px-1">
                   Program
                 </span>
-                <input
-                  type="text"
+                <select
                   className="bg-transparent w-full text-lg focus:outline-none"
-                  placeholder="e.g. Master of Computer Science"
                   value={program}
                   onChange={(e) => setProgram(e.target.value)}
-                />
+                >
+                  <option value="">-- Select a Program --</option>
+                  {availableDegrees.map((degree) => (
+                    <option key={degree.id} value={degree.id}>
+                      {degree.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               {isFilled(program) && (
-                <CheckCircleIcon className="w-7 h-7 text-green-500" />
-              )}
-            </div>
-
-            {/* Deadline */}
-            <div className="flex items-center space-x-3">
-              <div className="relative border-2 border-[#65558f] rounded-md px-4 py-4 flex-1">
-                <span className="absolute -top-3 left-3 bg-white text-sm font-semibold text-[#65558f] px-1">
-                  Deadline
-                </span>
-                <DatePicker
-                  selected={deadline}
-                  onChange={(date) => setDeadline(date)}
-                  dateFormat="MM/dd/yyyy"
-                  placeholderText="Select a deadline"
-                  className="bg-transparent w-full text-lg focus:outline-none"
-                />
-              </div>
-              {isFilled(deadline) && (
                 <CheckCircleIcon className="w-7 h-7 text-green-500" />
               )}
             </div>

@@ -4,10 +4,16 @@ export type User = {
     email: string;
     hashedpassword: string;
   };
+
+export type MajorInfo = {
+  id: number;
+  name: string;
+}
 export type UniversityInfo = {
     id: number;
     university_name: string;
-    program_name: string;
+    degree: DegreeInfo;
+    major: MajorInfo;
     program_duration: string;
     gre_requirement: string;
     university_logo_url: string;
@@ -21,4 +27,8 @@ export type RefereeInfo = {
   institution: string;
   recommendation_status: string;
   email: string;
+}
+export type DegreeInfo = {
+  id: number;
+  name: string;
 }

@@ -12,7 +12,6 @@ interface addRefereeRequest {
 export async function POST(request: NextRequest) {
     // print out request body as json
     const selectionInfo:addRefereeRequest = await request.json();
-    console.log(selectionInfo);
     const referee_name = selectionInfo.name;
     const referee_email = selectionInfo.email;
     const referee_position = selectionInfo.position;

@@ -48,9 +48,7 @@ export default function LoginForm() {
             },}}>
               <form action={async (formData: FormData) => {
                 setIsLoading(true);
-                console.log(isLoading);
                 await handleLogin(formData);
-                console.log(isLoading);
               }}>
               <div>
                  <label htmlFor="name">name</label>

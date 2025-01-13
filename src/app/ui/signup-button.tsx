@@ -28,9 +28,7 @@ export default function RegisterForm() {
             },}}>
               <form action={async (formData: FormData) => {
                 setIsLoading(true);
-                console.log(isLoading);
                 await handleRegister(formData);
-                console.log(isLoading);
               }}>
               <div>
                  <label htmlFor="name">name</label>

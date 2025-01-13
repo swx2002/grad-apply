@@ -20,7 +20,6 @@ export default async function UniversityApplicationPage({ params }: any) {
     }
     async function getRefereesByUserId(user_id: number, university_id: number) {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/referees/get_by_user?user_id=${user_id}&university_id=${university_id}`, {cache: 'no-store'});
-        console.log(res);
         if (!res.ok) {
             throw new Error('Failed to fetch applications');
         }
@@ -36,7 +35,6 @@ export default async function UniversityApplicationPage({ params }: any) {
 
     const universityInfo: UniversityInfo = await getUniversityById(university_id);
     const refereesInfo: RefereeInfo[] = await getRefereesByUserId(user_id,university_id);
-    console.log(refereesInfo);
     return (
         <div className="p-6">
         {/* Large Title (e.g., "Yale University") */}
@@ -56,7 +54,7 @@ export default async function UniversityApplicationPage({ params }: any) {
             {/* Program Title + Optional Edit Icon */}
             <div className="flex items-center mb-2">
               <h3 className="text-xl font-bold text-text-color">
-                {universityInfo.program_name}
+                {universityInfo.degree.name}
               </h3>
               <button className="text-sm text-blue-500 hover:underline ml-2">
                 ✏️
